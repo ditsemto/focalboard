@@ -8,12 +8,14 @@ import {Utils} from '../utils'
 import {BoardTree} from '../viewModel/boardTree'
 import {CardTree, MutableCardTree} from '../viewModel/cardTree'
 import DeleteIcon from '../widgets/icons/delete'
+import DuplicateIcon from '../widgets/icons/duplicate'
 import Menu from '../widgets/menu'
 
 import useCardListener from '../hooks/cardListener'
 
 import CardDetail from './cardDetail/cardDetail'
 import Dialog from './dialog'
+import {sendFlashMessage} from './flashMessages'
 
 type Props = {
     boardTree: BoardTree
@@ -27,6 +29,7 @@ const CardDialog = (props: Props) => {
     const [syncComplete, setSyncComplete] = useState(false)
     const [cardTree, setCardTree] = useState<CardTree>()
     const intl = useIntl()
+    const shareUrl = new URL(window.location.toString())
     useCardListener(
         [props.cardId],
         async (blocks) => {
@@ -76,6 +79,25 @@ const CardDialog = (props: Props) => {
                     }
                     await mutator.deleteBlock(card, 'delete card')
                     props.onClose()
+                }}
+            />
+            <Menu.Text
+                id='copyLink'
+                icon={<DuplicateIcon/>}
+                name='Copy link'
+                onClick={async () => {
+                    const card = cardTree?.card
+                    if (!card) {
+                        Utils.assertFailure()
+                        return
+                    }
+                    if (Utils.copyTextToClipboard(shareUrl.toString())) {
+                        const exportCompleteMessage = intl.formatMessage({
+                            id: 'ViewHeader.link-copied',
+                            defaultMessage: 'Link copied!',
+                        })
+                        sendFlashMessage({content: exportCompleteMessage, severity: 'normal'})
+                    }
                 }}
             />
             {(cardTree && !cardTree.card.isTemplate) &&

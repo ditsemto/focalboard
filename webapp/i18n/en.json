@@ -158,6 +158,8 @@
   "ViewHeader.share-board": "Share board",
   "ViewHeader.sort": "Sort",
   "ViewHeader.untitled": "Untitled",
+  "ViewHeader.link-copied": "Link copied",
+  "ViewHeader.copy-link": "Copy link",
   "ViewTitle.hide-description": "hide description",
   "ViewTitle.pick-icon": "Pick icon",
   "ViewTitle.random-icon": "Random",

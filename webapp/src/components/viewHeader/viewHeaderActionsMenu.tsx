@@ -15,6 +15,7 @@ import MenuWrapper from '../../widgets/menuWrapper'
 import ModalWrapper from '../modalWrapper'
 import ShareBoardComponent from '../shareBoardComponent'
 import {sendFlashMessage} from '../flashMessages'
+import {Utils} from '../../utils'
 
 type Props = {
     boardTree: BoardTree
@@ -95,6 +96,8 @@ const ViewHeaderActionsMenu = React.memo((props: Props) => {
     const {boardTree} = props
     const intl = useIntl()
 
+    const shareUrl = new URL(window.location.toString())
+
     return (
         <ModalWrapper>
             <MenuWrapper>
@@ -109,6 +112,19 @@ const ViewHeaderActionsMenu = React.memo((props: Props) => {
                         id='exportBoardArchive'
                         name={intl.formatMessage({id: 'ViewHeader.export-board-archive', defaultMessage: 'Export board archive'})}
                         onClick={() => Archiver.exportBoardArchive(boardTree)}
+                    />
+                    <Menu.Text
+                        id='copyLink'
+                        name={intl.formatMessage({id: 'ViewHeader.copy-link', defaultMessage: 'Copy link'})}
+                        onClick={() => {
+                            if (Utils.copyTextToClipboard(shareUrl.toString())) {
+                                const exportCompleteMessage = intl.formatMessage({
+                                    id: 'ViewHeader.link-copied',
+                                    defaultMessage: 'Link copied!',
+                                })
+                                sendFlashMessage({content: exportCompleteMessage, severity: 'normal'})
+                            }
+                        }}
                     />
                     <UserContext.Consumer>
                         {(user) => (user && user.id !== 'single-user' &&

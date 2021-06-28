@@ -18,7 +18,7 @@ import './filterComponent.scss'
 
 type Props = {
     boardTree: BoardTree
-    onClose: () => void
+    onClose: (e: Event) => void
 }
 
 const FilterComponent = React.memo((props: Props): JSX.Element => {

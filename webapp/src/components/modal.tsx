@@ -7,7 +7,7 @@ import CloseIcon from '../widgets/icons/close'
 import './modal.scss'
 
 type Props = {
-    onClose: () => void
+    onClose: (e: Event) => void
     position?: 'top'|'bottom'|'bottom-right'
     children: React.ReactNode
 }
@@ -22,7 +22,7 @@ const Modal = React.memo((props: Props): JSX.Element => {
             return
         }
 
-        onClose()
+        onClose(e)
     }
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const Modal = React.memo((props: Props): JSX.Element => {
         >
             <div className='toolbar hideOnWidescreen'>
                 <IconButton
-                    onClick={() => onClose()}
+                    onClick={(e: React.MouseEvent<HTMLDivElement>) => onClose(e.nativeEvent)}
                     icon={<CloseIcon/>}
                     title={'Close'}
                 />

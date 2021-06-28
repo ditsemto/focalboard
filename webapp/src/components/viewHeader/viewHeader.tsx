@@ -112,7 +112,10 @@ const ViewHeader = React.memo((props: Props) => {
                     {showFilter &&
                     <FilterComponent
                         boardTree={boardTree}
-                        onClose={() => setShowFilter(false)}
+                        onClose={(e) => {
+                            e.stopPropagation()
+                            setShowFilter(false)
+                        }}
                     />}
                 </ModalWrapper>
 
